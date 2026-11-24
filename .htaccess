@@ -1,0 +1,20 @@
+# FEEN Classes Apache Server Rewrite Rules
+# Targets Hostinger hPanel Web Spaces & Node fallback configurations
+# Bypasses "This page is not available / 404" errors on dynamic client reloads
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # Ensure sitemap.xml and robots.txt bypass index rewrite
+  RewriteRule ^sitemap\.xml$ sitemap.xml [L]
+  RewriteRule ^robots\.txt$ robots.txt [L]
+
+  # If requested path is a real file or directory on disk, serve it directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # All other requests are routed directly to index.html for client-side React-Router resolution
+  RewriteRule ^ index.html [L]
+</IfModule>
